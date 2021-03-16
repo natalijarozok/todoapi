@@ -1,4 +1,4 @@
-package com.erste.onboarding.todoapi.service
+package com.erste.onboarding.todoapi.facade
 
 import com.erste.onboarding.todoapi.data.entity.Task
 import com.erste.onboarding.todoapi.data.input.UpdateTaskInput
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class TaskService(
+class TaskFacade(
     private val taskRepository: TaskRepository
 ) {
 

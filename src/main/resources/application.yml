@@ -6,10 +6,10 @@ spring:
 
   application:
     name: todoApi
-  jpa:
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    generate-ddl: true
 
 server:
   port: 8080
