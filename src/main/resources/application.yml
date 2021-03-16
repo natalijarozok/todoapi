@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/todo_api
+    username: postgres
+    password: mysecretpassword
+  application:
+    name: todoApi
+
+server:
+  port: 8080
