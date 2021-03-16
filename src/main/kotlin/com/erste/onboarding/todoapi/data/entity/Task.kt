@@ -26,7 +26,7 @@ data class Task(
     @Column(columnDefinition = "timestamp with time zone default CURRENT_DATE not null")
     val createdAt: Instant,
 
-    @Column(columnDefinition = "timestamp with time zone default CURRENT_DATE not null")
-    val completedAt: Instant
+    @Column(columnDefinition = "timestamp with time zone")
+    val completedAt: Instant?
 
 )
