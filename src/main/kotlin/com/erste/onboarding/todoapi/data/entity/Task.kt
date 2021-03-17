@@ -3,14 +3,16 @@ package com.erste.onboarding.todoapi.data.entity
 import com.github.pozo.KotlinBuilder
 import java.time.Instant
 import java.util.*
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
 
 @KotlinBuilder
 @Entity
 @Table(name = "task", schema = "public")
 data class Task(
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     val id: UUID,
 
@@ -29,4 +31,22 @@ data class Task(
     @Column(columnDefinition = "timestamp with time zone")
     val completedAt: Instant?
 
-)
+) : Comparable<Task> {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val that: Task = other as Task
+        return id == that.id &&
+                name == that.name &&
+                notes == that.notes &&
+                isCompleted == that.isCompleted &&
+                createdAt == that.createdAt &&
+                completedAt == that.completedAt
+    }
+
+    override fun compareTo(other: Task): Int = when {
+        id < other.id -> -1
+        id > other.id -> 1
+        else          -> 0
+    }
+}

@@ -2,6 +2,7 @@ package com.erste.onboarding.todoapi.facade
 
 import com.erste.onboarding.todoapi.data.entity.Task
 import com.erste.onboarding.todoapi.data.input.UpdateTaskInput
+import com.erste.onboarding.todoapi.data.mapper.TaskMapper
 import com.erste.onboarding.todoapi.data.repository.TaskRepository
 import com.erste.onboarding.todoapi.exception.TaskNotFoundException
 import org.springframework.stereotype.Service
@@ -30,7 +31,9 @@ class TaskFacade(
     }
 
     fun updateTask(taskId: UUID, updateTaskInput: UpdateTaskInput): Task {
-        return getTaskById(taskId).let { taskRepository.save(it) }
+        return getTaskById(taskId).let { task ->
+            TaskMapper.toTask(updateTaskInput, task).let { taskRepository.save(it) }
+        }
     }
 
     private fun findByTaskId(taskId: UUID): Task? {

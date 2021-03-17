@@ -6,5 +6,5 @@ import com.github.pozo.KotlinBuilder
 data class UpdateTaskInput(
     val name: String,
     val notes: String?,
-    val isCompleted: Boolean?
+    val isComplete: Boolean?
 )
