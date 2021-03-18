@@ -7,7 +7,7 @@ import java.util.*
 
 @Repository
 interface TaskRepository : CrudRepository<Task, UUID> {
-    fun findByName(name: String): Task?
+    fun getById(taskId: UUID): Task?
     fun getAllBy(): List<Task>
     fun save(task: Task): Task
 }
