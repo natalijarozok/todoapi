@@ -1,0 +1,25 @@
+version: "3.1"
+services:
+    todoapi:
+        container_name: todoapi
+        build:
+            context: ../todoapi/
+            dockerfile: Dockerfile
+        image: "todoapi_image:1.0"
+        depends_on:
+            - postgres
+        links:
+            - postgres
+        ports:
+            - 8080:8080
+    postgres:
+        container_name: todoapi_postgres
+        image: postgres:12
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: mysecretpassword
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+
