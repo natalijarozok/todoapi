@@ -11,14 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired
 class RepositoryIntegrationTests : BaseTest() {
 
     @Autowired
-    lateinit var taskRepository: TaskRepository
+    lateinit var sut: TaskRepository
 
     @Test
     fun `get task by id`() {
         val taskExpected = TaskMother.createDefault()
         dbDataManager.feedTaskTable(taskExpected)
 
-        val taskActual = taskRepository.getById(taskExpected.id)
+        val taskActual = sut.getById(taskExpected.id)
 
         assertEquals(taskExpected, taskActual)
     }
@@ -30,7 +30,7 @@ class RepositoryIntegrationTests : BaseTest() {
         tasksExpected.add(TaskMother.createDefault())
         tasksExpected.forEach { dbDataManager.feedTaskTable(it) }
 
-        val tasksActual = taskRepository.getAllBy()
+        val tasksActual = sut.getAllBy()
 
         assertEquals(tasksExpected.sorted(), tasksActual.sorted())
     }
@@ -39,7 +39,7 @@ class RepositoryIntegrationTests : BaseTest() {
     fun `create new task`() {
         val taskExpected = TaskMother.createDefault()
 
-        taskRepository.save(taskExpected)
+        sut.save(taskExpected)
 
         val taskActual = dbDataManager.selectFromTaskTable(taskExpected.id)
 
@@ -51,7 +51,7 @@ class RepositoryIntegrationTests : BaseTest() {
         val task = TaskMother.createDefault()
         dbDataManager.feedTaskTable(task)
 
-        taskRepository.deleteById(task.id)
+        sut.deleteById(task.id)
 
 
         val taskActual = dbDataManager.selectFromTaskTable(task.id)
@@ -62,7 +62,6 @@ class RepositoryIntegrationTests : BaseTest() {
     @Test
     fun `update task`() {
         val task = TaskMother.createDefault()
-
         dbDataManager.feedTaskTable(task)
 
         val taskExpected = TaskMother.createDefault(
@@ -72,7 +71,7 @@ class RepositoryIntegrationTests : BaseTest() {
             isComplete = true
         )
 
-        taskRepository.save(taskExpected)
+        sut.save(taskExpected)
 
         val taskActual = dbDataManager.selectFromTaskTable(taskExpected.id)
 

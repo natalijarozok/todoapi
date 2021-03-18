@@ -1,7 +1,7 @@
 package com.erste.onboarding.todoapi.data.motherFactory
 
+import com.erste.onboarding.todoapi.data.builder.TaskBuilder
 import com.erste.onboarding.todoapi.data.entity.Task
-import com.erste.onboarding.todoapi.data.entity.TaskBuilder
 import java.time.Instant
 import java.util.*
 
@@ -19,7 +19,7 @@ class TaskMother {
                 .setId(id)
                 .setName(name)
                 .setNotes(notes)
-                .setIsCompleted(isComplete ?: false)
+                .setIsComplete(isComplete ?: false)
                 .setCreatedAt(createdAt)
                 .setCompletedAt(completedAt)
                 .create()

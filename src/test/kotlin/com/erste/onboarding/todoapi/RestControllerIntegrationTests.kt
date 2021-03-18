@@ -1,6 +1,7 @@
 package com.erste.onboarding.todoapi
 
 import com.erste.onboarding.todoapi.data.entity.Task
+import com.erste.onboarding.todoapi.data.input.UpdateTaskInput
 import com.erste.onboarding.todoapi.data.motherFactory.CreateTaskInputMother
 import com.erste.onboarding.todoapi.data.motherFactory.TaskMother
 import com.erste.onboarding.todoapi.data.motherFactory.UpdateTaskInputMother
@@ -16,7 +17,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.web.server.LocalServerPort
 
 
-class ControllerIntegrationTests : BaseTest() {
+class RestControllerIntegrationTests : BaseTest() {
 
     @LocalServerPort
     var serverPort = 0
@@ -94,7 +95,7 @@ class ControllerIntegrationTests : BaseTest() {
 
         assertEquals(taskExpected.name, taskActual.name)
         assertEquals(taskExpected.notes, taskActual.notes)
-        assertEquals(taskExpected.isCompleted, taskActual.isCompleted)
+        assertEquals(taskExpected.isComplete, taskActual.isComplete)
     }
 
     @Test
@@ -120,21 +121,43 @@ class ControllerIntegrationTests : BaseTest() {
     }
 
     @Test
-    fun `update task`() {
+    fun `update task with full data`() {
+        val updatePayload = UpdateTaskInputMother.createDefault()
+        testUpdateTask(updatePayload)
+    }
+
+    @Test
+    fun `update task with isComplete field`() {
+        val updatePayload = UpdateTaskInputMother.createWithIsCompleteOnly()
+        testUpdateTask(updatePayload)
+    }
+
+    @Test
+    fun `update task with Name and isComplete fields`() {
+        val updatePayload = UpdateTaskInputMother.createWithNameAndIsComplete()
+        testUpdateTask(updatePayload)
+    }
+
+    @Test
+    fun `update task with Notes and isComplete fields`() {
+        val updatePayload = UpdateTaskInputMother.createWithNotesAndIsComplete()
+        testUpdateTask(updatePayload)
+    }
+
+    private fun testUpdateTask(updatePayload: UpdateTaskInput) {
         val task = TaskMother.createDefault()
         dbDataManager.feedTaskTable(task)
 
-        val payload = UpdateTaskInputMother.createDefault()
         val taskExpected = TaskMother.createDefault(
-            name = payload.name,
-            notes = payload.notes,
-            isComplete = payload.isComplete
+            name = updatePayload.name ?: task.name,
+            notes = updatePayload.notes ?: task.notes,
+            isComplete = updatePayload.isComplete
         )
 
         val response = Given {
             contentType(ContentType.JSON)
             pathParam("taskId", task.id)
-            body(payload)
+            body(updatePayload)
         } When {
             patch("$apiEndpoint/{taskId}")
         } Then {
@@ -148,6 +171,6 @@ class ControllerIntegrationTests : BaseTest() {
 
         assertEquals(taskExpected.name, taskActual.name)
         assertEquals(taskExpected.notes, taskActual.notes)
-        assertEquals(taskExpected.isCompleted, taskActual.isCompleted)
+        assertEquals(taskExpected.isComplete, taskActual.isComplete)
     }
 }

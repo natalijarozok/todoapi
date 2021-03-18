@@ -14,12 +14,12 @@ class DbDataManager(
     @Transactional
     fun feedTaskTable(task: Task) {
         entityManager.createNativeQuery(
-            "INSERT INTO task (id, name, notes, is_completed, created_at)" +
+            "INSERT INTO task (id, name, notes, is_complete, created_at)" +
                     " values(" +
                     "'${task.id}', " +
                     "'${task.name}', " +
                     "'${task.notes}', " +
-                    "${task.isCompleted}, " +
+                    "${task.isComplete}, " +
                     "'${task.createdAt}'" +
                     ")"
         ).executeUpdate()
@@ -27,7 +27,7 @@ class DbDataManager(
 
     fun selectFromTaskTable(taskId: UUID): Task? {
         val tasks = entityManager.createNativeQuery(
-            "SELECT CAST(id as varchar) id, name, notes, is_completed, created_at, completed_at" +
+            "SELECT CAST(id as varchar) id, name, notes, is_complete, created_at, completed_at" +
                     " FROM task WHERE id = '${taskId}'", Task::class.java
         ).resultList
 
